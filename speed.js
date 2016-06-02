@@ -7,15 +7,23 @@ var options = {
   pollResults: 5,
   private: true,
   firstViewOnly: true,
-  dryRun: false ,
-  key: config.key
+  dryRun: false,
+  pageSpeed: true,
+  key: config.key2
 }
 
-wpt.runTest('https://twitter.com/marcelduran', options,function(err, res) {
-  console.log(err || res);
+wpt.runTest('http://www.google.com', options,function(err, res) {
+  console.log(err);
+  var firstView = res.data.average.firstView;
 
-  console.log(res.data.id);
-  console.log(res.data.average.firstView.loadTime);
+  console.log(res.data.testUrl);
+  console.log('TTFB', firstView.TTFB);
+  console.log('bytesOut', firstView.bytesOut);
+  console.log('bytesIn', firstView.bytesIn);
+  console.log('requests', firstView.requests);
+  console.log('render', firstView.render);
+  console.log('loadTime', firstView.loadTime);
+  console.log('SpeedIndex', firstView.SpeedIndex);
 });
 
 /*Dulles_IE9
