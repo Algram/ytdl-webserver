@@ -12,19 +12,25 @@ var options = {
   key: config.key2
 }
 
-wpt.runTest('http://www.google.com', options,function(err, res) {
-  console.log(err);
-  var firstView = res.data.average.firstView;
+function test(url) {
+  wpt.runTest(url, options,function(err, res) {
+    console.log(err);
+    var firstView = res.data.average.firstView;
 
-  console.log(res.data.testUrl);
-  console.log('TTFB', firstView.TTFB);
-  console.log('bytesOut', firstView.bytesOut);
-  console.log('bytesIn', firstView.bytesIn);
-  console.log('requests', firstView.requests);
-  console.log('render', firstView.render);
-  console.log('loadTime', firstView.loadTime);
-  console.log('SpeedIndex', firstView.SpeedIndex);
-});
+    console.log(res.data.testUrl);
+    console.log('TTFB', firstView.TTFB);
+    console.log('bytesOut', firstView.bytesOut);
+    console.log('bytesIn', firstView.bytesIn);
+    console.log('requests', firstView.requests);
+    console.log('render', firstView.render);
+    console.log('loadTime', firstView.loadTime);
+    console.log('SpeedIndex', firstView.SpeedIndex);
+  });
+}
+
+module.exports {
+  test: test
+}
 
 /*Dulles_IE9
 Dulles_IE10
