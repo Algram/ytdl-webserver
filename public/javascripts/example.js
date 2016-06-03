@@ -73,17 +73,9 @@ var Comment = React.createClass({
 });
 
 var CommentBox = React.createClass({
-  loadCommentsFromServer: function() {
-    $.ajax({
-      url: this.props.url,
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        this.setState({data: data});
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.error(this.props.url, status, err.toString());
-      }.bind(this)
+  handleCommentReceive: function(comment) {
+    socket.on('message', data => {
+      this.setState({data: data});
     });
   },
   handleCommentSubmit: function(comment) {
@@ -94,7 +86,8 @@ var CommentBox = React.createClass({
     comment.id = Date.now();
     var newComments = comments.concat([comment]);
     this.setState({data: newComments});
-    $.ajax({
+
+    /*$.ajax({
       url: this.props.url,
       dataType: 'json',
       type: 'POST',
@@ -106,14 +99,16 @@ var CommentBox = React.createClass({
         this.setState({data: comments});
         console.error(this.props.url, status, err.toString());
       }.bind(this)
-    });
+    });*/
+
+    socket.emit('message', comment);
   },
   getInitialState: function() {
     return {data: []};
   },
   componentDidMount: function() {
-    this.loadCommentsFromServer();
-    setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    this.handleCommentReceive();
+    socket.emit('ready');
   },
   render: function() {
     return (
@@ -126,6 +121,6 @@ var CommentBox = React.createClass({
   }
 });
 ReactDOM.render(
-  <CommentBox url="/api/comments" pollInterval={2000}/>,
+  <CommentBox />,
   document.getElementById('content')
 );

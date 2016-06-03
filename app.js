@@ -7,14 +7,16 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var api = require('./routes/api');
 
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-io.on('connection', function(socket){
-  console.log('a user connected');
+
+// Pass socket.io to routes
+app.use(function(req, res, next){
+  res.io = io;
+  next();
 });
 
 // view engine setup
@@ -37,7 +39,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/api', api);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -71,4 +72,4 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+module.exports = {app: app, server: server};
