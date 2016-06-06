@@ -3,8 +3,11 @@ var socket = io();
 var TestList = React.createClass({
   render: function() {
     var testNodes = this.props.data.map(function(test) {
+      console.log(test);
       return (
-        <Test key={test.id} url={test.url} />
+        <Test key={test.id} url={test.url}>
+          {test.score}
+        </Test>
       );
     });
 
@@ -54,6 +57,7 @@ var Test = React.createClass({
         <h5 className="testUrl">
           {this.props.url}
         </h5>
+        {this.props.children}
       </div>
     );
   }

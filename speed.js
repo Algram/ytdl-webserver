@@ -12,7 +12,7 @@ var options = {
   key: config.key2
 };
 
-function test(url) {
+function test(url, cb) {
   wpt.runTest(url, options,function(err, res) {
     console.log(err);
     var firstView = res.data.average.firstView;
@@ -25,6 +25,8 @@ function test(url) {
     console.log('render', firstView.render);
     console.log('loadTime', firstView.loadTime);
     console.log('SpeedIndex', firstView.SpeedIndex);
+
+    cb(firstView.loadTime);
   });
 }
 

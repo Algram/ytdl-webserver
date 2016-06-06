@@ -23,9 +23,12 @@ router.get('/', function(req, res, next) {
 
       socket.on('test', function(url) {
         url.id = data.length + 1;
-        data.push(url);
-        res.io.emit('test', data);
-        speed.test(url);
+
+        speed.test(url, function(speed) {
+          url.score = speed;
+          data.push(url);
+          res.io.emit('test', data);
+        });
       });
     });
   }
