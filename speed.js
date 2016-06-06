@@ -10,7 +10,7 @@ var options = {
   dryRun: false,
   pageSpeed: true,
   key: config.key2
-}
+};
 
 function test(url) {
   wpt.runTest(url, options,function(err, res) {
@@ -28,9 +28,7 @@ function test(url) {
   });
 }
 
-module.exports {
-  test: test
-}
+module.exports = test;
 
 /*Dulles_IE9
 Dulles_IE10
