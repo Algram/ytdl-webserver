@@ -28,7 +28,9 @@ function test(url) {
   });
 }
 
-module.exports = test;
+module.exports = {
+  test: test
+};
 
 /*Dulles_IE9
 Dulles_IE10

@@ -1,11 +1,9 @@
-const express = require('express');
-const router = express.Router();
+var express = require('express');
+var router = express.Router();
+var speed = require('../speed');
 
 
-let data = [
-  {id: 1, author: "Pate Hunt", text: "This is one comment"},
-  {id: 2, author: "Jordan Walke", text: "This is *another* comment"}
-];
+var data = [];
 var connected = false;
 
 /* GET home page. */
@@ -20,13 +18,14 @@ router.get('/', function(req, res, next) {
       });
 
       socket.on('ready', function() {
-        socket.emit('message', data);
+        socket.emit('test', data);
       });
 
-      socket.on('message', function(msg) {
-        msg.id = data.length + 1;
-        data.push(msg);
-        res.io.emit('message', data);
+      socket.on('test', function(url) {
+        url.id = data.length + 1;
+        data.push(url);
+        res.io.emit('test', data);
+        speed.test(url);
       });
     });
   }
