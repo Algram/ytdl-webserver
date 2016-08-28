@@ -1,0 +1,7 @@
+{
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": ["error", "never"],
+    "no-console": ["error", {"allow": ["log"]}]
+  }
+}
