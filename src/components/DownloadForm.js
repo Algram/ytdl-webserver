@@ -1,5 +1,3 @@
-/* global document */
-
 import React, { Component, PropTypes } from 'react';
 import '../stylesheets/DownloadForm.scss';
 
@@ -7,15 +5,9 @@ class DownloadForm extends Component {
   componentDidMount() {
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    const url = document.querySelector('.downloadForm__input');
-    console.log('url', url.value);
-  }
-
   render() {
     return (
-      <form className="downloadForm" onSubmit={this.handleSubmit}>
+      <form className="downloadForm" onSubmit={this.props.onSubmit}>
         <input className="downloadForm__input" type="text" />
         <button className="downloadForm__btn">▶</button>
       </form>
@@ -24,7 +16,8 @@ class DownloadForm extends Component {
 }
 
 DownloadForm.propTypes = {
-  name: PropTypes.string
+  name: PropTypes.string,
+  onSubmit: PropTypes.func
 };
 
 

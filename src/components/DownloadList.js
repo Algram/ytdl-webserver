@@ -8,29 +8,29 @@ class DownloadList extends Component {
   render() {
     return (
       <ul className="downloadList">
-        <li className="downloadList__item">
-          <span className="video__name">videoname - asdasd</span>
-          <span className="video__link"><a href="">Download</a></span>
-        </li>
-        <li className="downloadList__item">
-          <span className="video__name">videoname - asdasd</span>
-          <span className="video__link"><a href="">Download</a></span>
-        </li>
-        <li className="downloadList__item">
-          <span className="video__name">videoname - asdasd</span>
-          <span className="video__link"><a href="">Download</a></span>
-        </li>
-        <li className="downloadList__item">
-          <span className="video__name">videoname - asdasd</span>
-          <span className="video__link"><a href="">Download</a></span>
-        </li>
+        {this.props.videos.map((video, index) =>
+          <li key={index} className="downloadList__item">
+            <span className="video__name">{video.name}</span>
+            {(video.downloading) ?
+              <div className="spinner">
+                <div className="bounce1" />
+                <div className="bounce2" />
+                <div className="bounce3" />
+              </div>
+              :
+              <span className="video__link">
+                <a href={video.link} download={video.name}>Download</a>
+              </span>
+            }
+          </li>
+        )}
       </ul>
     );
   }
 }
 
 DownloadList.propTypes = {
-  name: PropTypes.string
+  videos: PropTypes.array
 };
 
 
