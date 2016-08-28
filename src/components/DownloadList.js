@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import '../stylesheets/DownloadList.scss';
 
 class DownloadList extends Component {
   componentDidMount() {
@@ -6,7 +7,24 @@ class DownloadList extends Component {
 
   render() {
     return (
-      <span>I am a DownloadList</span>
+      <ul className="downloadList">
+        <li className="downloadList__item">
+          <span className="video__name">videoname - asdasd</span>
+          <span className="video__link"><a href="">Download</a></span>
+        </li>
+        <li className="downloadList__item">
+          <span className="video__name">videoname - asdasd</span>
+          <span className="video__link"><a href="">Download</a></span>
+        </li>
+        <li className="downloadList__item">
+          <span className="video__name">videoname - asdasd</span>
+          <span className="video__link"><a href="">Download</a></span>
+        </li>
+        <li className="downloadList__item">
+          <span className="video__name">videoname - asdasd</span>
+          <span className="video__link"><a href="">Download</a></span>
+        </li>
+      </ul>
     );
   }
 }

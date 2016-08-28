@@ -1,6 +1,10 @@
+@import "./shared";
+
 .downloadPanel {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-center;
   justify-content: center;
+  align-content: center;
   height: 100vh;
 }

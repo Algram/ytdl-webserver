@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import DownloadForm from './DownloadForm';
+import DownloadList from './DownloadList';
 import '../stylesheets/DownloadPanel.scss';
 
 const props = {
@@ -15,6 +16,7 @@ class DownloadPanel extends Component {
     return (
       <div className="downloadPanel">
         <DownloadForm />
+        <DownloadList />
       </div>
     );
   }

@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+
+$text_primary: #eeffff;
+$text_secondary: #d3d0c8;
+
+$background_primary: #202530;
+$background_secondary: #2f343f;
+
+$accent_primary: #cc181e;
+
+@mixin makePanel() {
+  box-shadow: 0 0 5px rgb(40,40,40);
+  border-radius: 2px;
+  border: none;
+  outline: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: $background_primary;
+  color: $text_primary;
+  font-family: 'Open Sans', sans-serif;
+}

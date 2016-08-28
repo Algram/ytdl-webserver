@@ -1,0 +1,42 @@
+@import "./shared";
+
+.downloadList {
+  @include makePanel();
+  margin-top: 20px;
+  list-style-type: none;
+  background: $background_secondary;
+  flex: 0 1 600px;
+  display: flex;
+  flex-wrap: wrap;
+
+  &__item {
+    width: 100%;
+    padding: 10px;
+    flex: 1 0 300px;
+    display: flex;
+  }
+}
+
+.video {
+  &__name {
+    color: $text-secondary;
+  }
+
+  &__link {
+    flex-grow: 1 1 400px;
+    margin-left: auto;
+    font-size: 14px;
+
+    a {
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      &:visited {
+        color: $text-secondary;
+      }
+    }
+  }
+}
