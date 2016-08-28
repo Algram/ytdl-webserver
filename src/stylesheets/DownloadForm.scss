@@ -1,7 +1,32 @@
 .downloadForm {
-
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 500px;
 
   &__input {
-    background: red;
+    flex: 1 1 90%;
+    font-size: 16px;
+    appearance: none;
+    box-shadow: 0 0 5px rgb(40,40,40);
+    border-radius: 2px;
+    border: 1px solid #eeffff;
+    padding: 10px;
+    margin-right: 10px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__btn {
+    flex: 0 0 10%;
+    padding: 12px;
+    color: #eeffff;
+    border-radius: 2px;
+    box-shadow: 0 0 5px rgb(40,40,40);
+    border: none;
+    background-color: #cc181e;
+    outline: none;
   }
 }

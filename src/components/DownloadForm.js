@@ -9,7 +9,7 @@ class DownloadForm extends Component {
     return (
       <form className="downloadForm" action="">
         <input className="downloadForm__input" type="text" />
-        <button>▶</button>
+        <button className="downloadForm__btn">▶</button>
       </form>
     );
   }

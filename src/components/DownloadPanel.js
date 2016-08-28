@@ -13,8 +13,7 @@ class DownloadPanel extends Component {
 
   render() {
     return (
-      <div>DownloadPanel {this.props.name}
-        <h1>{this.props.headline}</h1>
+      <div className="downloadPanel">
         <DownloadForm />
       </div>
     );

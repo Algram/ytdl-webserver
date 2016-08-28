@@ -1,7 +1,14 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
+$text_primary: #eeffff;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   background: #2E343D; //#cc181e;
-  color: #eeffff;
+  color: $text_primary;
   font-family: 'Open Sans', sans-serif;
 }
