@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import DownloadForm from './DownloadForm';
+import '../stylesheets/DownloadPanel.scss';
 
 const props = {
 
