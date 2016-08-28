@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base src --hot --inline",
+    "start": "webpack-dev-server --content-base build --hot --inline",
     "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

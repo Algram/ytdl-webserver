@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import '../stylesheets/DownloadForm.scss';
 
 class DownloadForm extends Component {
   componentDidMount() {
@@ -6,9 +7,9 @@ class DownloadForm extends Component {
 
   render() {
     return (
-      <form action="">
-        First name:<br />
-        <input type="text" name="firstname" value="" />
+      <form className="downloadForm" action="">
+        <input className="downloadForm__input" type="text" />
+        <button>▶</button>
       </form>
     );
   }
