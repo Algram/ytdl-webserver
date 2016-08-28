@@ -1,4 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import DownloadForm from './DownloadForm';
+
+const props = {
+
+};
 
 class DownloadPanel extends Component {
   componentDidMount() {
@@ -9,6 +14,7 @@ class DownloadPanel extends Component {
     return (
       <div>DownloadPanel {this.props.name}
         <h1>{this.props.headline}</h1>
+        <DownloadForm />
       </div>
     );
   }

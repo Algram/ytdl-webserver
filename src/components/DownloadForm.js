@@ -6,7 +6,10 @@ class DownloadForm extends Component {
 
   render() {
     return (
-      <span>I am a DownloadForm</span>
+      <form action="">
+        First name:<br />
+        <input type="text" name="firstname" value="" />
+      </form>
     );
   }
 }
