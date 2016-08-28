@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import { render } from 'react-dom';
+import DownloadPanel from './components/DownloadPanel';
 
 class Hello extends React.Component {
   componentDidMount() {
@@ -23,4 +24,6 @@ Hello.propTypes = {
 };
 
 render(
-  <Hello name="somewename" headline="adsuiasd" />, document.getElementById('app'));
+  <DownloadPanel />,
+  document.getElementById('app')
+);

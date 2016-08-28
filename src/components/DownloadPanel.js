@@ -1,0 +1,23 @@
+import React, { Component, PropTypes } from 'react';
+
+class DownloadPanel extends Component {
+  componentDidMount() {
+    console.log('asdasd', this.props.name);
+  }
+
+  render() {
+    return (
+      <div>DownloadPanel {this.props.name}
+        <h1>{this.props.headline}</h1>
+      </div>
+    );
+  }
+}
+
+DownloadPanel.propTypes = {
+  name: PropTypes.string,
+  headline: PropTypes.string
+};
+
+
+export default DownloadPanel;
