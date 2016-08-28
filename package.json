@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base build --hot --inline",
+    "start": "webpack-dev-server --content-base src --hot --inline",
+    "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,7 +19,9 @@
   },
   "homepage": "https://github.com/Algram/ytdl-webserver#readme",
   "dependencies": {
-    "hapi": "^15.0.1"
+    "hapi": "^15.0.1",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",
@@ -30,8 +33,6 @@
     "eslint-plugin-import": "^1.14.0",
     "eslint-plugin-jsx-a11y": "^2.2.0",
     "eslint-plugin-react": "^6.1.2",
-    "react": "^15.3.1",
-    "react-dom": "^15.3.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.0"
   }

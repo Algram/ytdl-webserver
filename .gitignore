@@ -34,3 +34,5 @@ node_modules
 
 # Exclude config
 config.json
+
+build
