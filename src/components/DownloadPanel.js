@@ -6,16 +6,11 @@ import DownloadList from './DownloadList';
 import { post } from '../javascripts/helpers';
 import '../stylesheets/DownloadPanel.scss';
 
-const data = {
-  videos: [
-  ]
-};
-
 class DownloadPanel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = data;
+    this.state = { videos: [] };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -23,17 +18,20 @@ class DownloadPanel extends Component {
     e.preventDefault();
     const urlInput = document.querySelector('.downloadForm__input');
     const url = urlInput.value;
+
+    if (url.length === 0) {
+      return;
+    }
+
     urlInput.value = '';
 
     post('/download', `url=${url}`).then(response => {
       console.log('Success!', response);
-    }, error => {
-      console.log('Failed!', error);
 
       let videos = this.state.videos;
       this.setState({ videos: [{
         name: url,
-        link: url,
+        url,
         downloading: true
       }, ...videos] });
 
@@ -41,18 +39,21 @@ class DownloadPanel extends Component {
       setTimeout(() => {
         const newVideo = {
           name: 'somerandomperson – hello',
-          link: url,
+          url,
           downloading: false
         };
 
         videos = this.state.videos;
 
+        // TODO remove Object.assign since no fields are getting updated
         const updatedVideos = videos.map(video =>
-          (video.link === newVideo.link ? Object.assign(video, newVideo) : video)
+          (video.url === newVideo.url ? Object.assign({}, video, newVideo) : video)
         );
 
         this.setState({ videos: updatedVideos });
       }, 3000);
+    }, error => {
+      console.log('Failed!', error);
     });
   }
 

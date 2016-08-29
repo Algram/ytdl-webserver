@@ -6,6 +6,7 @@ function get(url) {
     // Do the usual XHR stuff
     const req = new XMLHttpRequest();
     req.open('GET', url);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     req.onload = () => {
       // This is called even on 404 etc
@@ -36,6 +37,7 @@ function post(url, params) {
     // Do the usual XHR stuff
     const req = new XMLHttpRequest();
     req.open('POST', url);
+    req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     req.onload = () => {
       // This is called even on 404 etc

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --content-base build --hot --inline",
+    "hapi": "node ./src/server/server.js",
     "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,10 +20,11 @@
   },
   "homepage": "https://github.com/Algram/ytdl-webserver#readme",
   "dependencies": {
+    "extract-text-webpack-plugin": "^1.0.1",
     "hapi": "^15.0.1",
+    "inert": "^4.0.2",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1",
-    "extract-text-webpack-plugin": "^1.0.1"
+    "react-dom": "^15.3.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
