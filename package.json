@@ -21,10 +21,12 @@
   "homepage": "https://github.com/Algram/ytdl-webserver#readme",
   "dependencies": {
     "extract-text-webpack-plugin": "^1.0.1",
+    "fluent-ffmpeg": "^2.1.0",
     "hapi": "^15.0.1",
     "inert": "^4.0.2",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "youtube-dl": "^1.11.1"
   },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",

@@ -1,6 +1,7 @@
 const Hapi = require('hapi');
 const Inert = require('inert');
 const path = require('path');
+const youtube = require('./handlers/youtube');
 
 const server = new Hapi.Server({
   connections: {
@@ -32,7 +33,7 @@ server.route({
   path: '/download',
   handler: (request, reply) => {
     const url = request.payload.url;
-    //youtube.download(url);
+    youtube.download(url);
 
     reply({
       name: 'somerandomperson – hello',
