@@ -34,17 +34,14 @@ server.route({
   handler: (request, reply) => {
     const url = request.payload.url;
     const options = {
-      path: 'downloads',
+      path: path.join(__dirname, 'temp'),
       audioOnly: true
     };
 
-    youtube.download(url, options);
-
-    reply({
-      name: 'somerandomperson – hello',
-      url,
-      downloading: false
-    });
+    youtube.download(url, options)
+      .then(video => {
+        reply(video);
+      });
   }
 });
 
