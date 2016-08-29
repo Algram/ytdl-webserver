@@ -19,7 +19,10 @@ class DownloadList extends Component {
               </div>
               :
               <span className="video__link">
-                <a href={video.url} download={video.name}>Download</a>
+                <a
+                  href={`/request/${video.name}.${video.format}`}
+                  download={`${video.name}.${video.format}`}
+                >Download</a>
               </span>
             }
           </li>

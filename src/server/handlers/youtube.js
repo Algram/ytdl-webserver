@@ -32,7 +32,8 @@ function download(url, options = {
           const videoObj = {
             name: filename,
             url,
-            downloading: false
+            downloading: false,
+            format
           };
 
           resolve(videoObj);

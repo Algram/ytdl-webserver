@@ -34,7 +34,7 @@ server.route({
   handler: (request, reply) => {
     const url = request.payload.url;
     const options = {
-      path: path.join(__dirname, 'temp'),
+      path: path.join(__dirname, '../../build/temp'),
       audioOnly: true
     };
 
@@ -42,6 +42,15 @@ server.route({
       .then(video => {
         reply(video);
       });
+  }
+});
+
+server.route({
+  method: 'GET',
+  path: '/request/{video}',
+  handler: (request, reply) => {
+    const videoName = encodeURIComponent(request.params.video);
+    reply.file(path.join('temp', decodeURIComponent(videoName)));
   }
 });
 
