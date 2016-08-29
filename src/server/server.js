@@ -33,7 +33,12 @@ server.route({
   path: '/download',
   handler: (request, reply) => {
     const url = request.payload.url;
-    youtube.download(url);
+    const options = {
+      path: 'downloads',
+      audioOnly: true
+    };
+
+    youtube.download(url, options);
 
     reply({
       name: 'somerandomperson – hello',

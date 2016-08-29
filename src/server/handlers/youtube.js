@@ -1,13 +1,17 @@
-const fs = require('fs');
-const path = require('path');
+const ffmpeg = require('fluent-ffmpeg');
 const youtubeDl = require('youtube-dl');
 
-function download(videoId, options = {
+function download(url, options = {
   path: 'downloads',
   audioOnly: false
 }) {
+  let format = 'mp4';
+  if (options.audioOnly) {
+    format = 'mp3';
+  }
+
   // TODO Add proper support for options
-  const video = youtubeDl(`http://www.youtube.com/watch?v=${videoId}`,
+  const video = youtubeDl(url,
     // Optional arguments passed to youtube-dl.
     ['--format=18'],
     // Additional options can be given for calling `child_process.execFile()`.
@@ -15,15 +19,18 @@ function download(videoId, options = {
 
   // Will be called when the download starts.
   video.on('info', info => {
-    const filename = info.filename;
-    // filename = filename
-    //             .replace('.webm', '')
-    //             .substring(0, filename.length - 17);
+    let filename = info.filename;
+    filename = filename
+                .replace('.mp4', '')
+                .substring(0, filename.length - 16);
 
-    video.pipe(fs.createWriteStream(path.join(
-      options.path,
-      options.audioOnly ? `${filename}.mp3` : `${filename}.webm`
-    )));
+    // Convert to audio
+    ffmpeg({ source: video })
+      .on('end', () => {
+        console.log('Transcoding succeeded !');
+      })
+      .toFormat(format)
+      .save(`${filename}.${format}`);
   });
 }
 
