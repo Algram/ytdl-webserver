@@ -25,33 +25,22 @@ class DownloadPanel extends Component {
 
     urlInput.value = '';
 
-    post('/download', `url=${url}`).then(response => {
-      console.log('Success!', response);
+    // Provide instant feedback by adding as much as we know to state
+    let videos = this.state.videos;
+    this.setState({ videos: [{
+      name: url,
+      url,
+      downloading: true
+    }, ...videos] });
 
-      let videos = this.state.videos;
-      this.setState({ videos: [{
-        name: url,
-        url,
-        downloading: true
-      }, ...videos] });
+    post('/download', `url=${url}`).then(newVideo => {
+      videos = this.state.videos;
 
-      // MOCK
-      setTimeout(() => {
-        const newVideo = {
-          name: 'somerandomperson – hello',
-          url,
-          downloading: false
-        };
+      const updatedVideos = videos.map(video =>
+        (video.url === newVideo.url ? Object.assign({}, video, newVideo) : video)
+      );
 
-        videos = this.state.videos;
-
-        // TODO remove Object.assign since no fields are getting updated
-        const updatedVideos = videos.map(video =>
-          (video.url === newVideo.url ? Object.assign({}, video, newVideo) : video)
-        );
-
-        this.setState({ videos: updatedVideos });
-      }, 3000);
+      this.setState({ videos: updatedVideos });
     }, error => {
       console.log('Failed!', error);
     });
