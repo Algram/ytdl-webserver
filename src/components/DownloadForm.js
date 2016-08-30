@@ -16,7 +16,6 @@ class DownloadForm extends Component {
 }
 
 DownloadForm.propTypes = {
-  name: PropTypes.string,
   onSubmit: PropTypes.func
 };
 

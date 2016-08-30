@@ -56,8 +56,4 @@ class DownloadPanel extends Component {
   }
 }
 
-DownloadPanel.propTypes = {
-};
-
-
 export default DownloadPanel;
