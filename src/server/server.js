@@ -7,7 +7,7 @@ const server = new Hapi.Server({
   connections: {
     routes: {
       files: {
-        relativeTo: path.join(__dirname, '../../build')
+        relativeTo: path.join(__dirname, '../../public')
       }
     }
   }
@@ -34,7 +34,7 @@ server.route({
   handler: (request, reply) => {
     const url = request.payload.url;
     const options = {
-      path: path.join(__dirname, '../../build/temp'),
+      path: path.join(__dirname, '../../public/temp'),
       audioOnly: true
     };
 
