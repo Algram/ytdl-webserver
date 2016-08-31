@@ -2,18 +2,18 @@
 
 .downloadList {
   @include makePanel();
-  margin-top: 20px;
-  list-style-type: none;
   background: $background_secondary;
-  flex: 0 1 600px;
   display: flex;
+  flex: 0 1 600px;
   flex-wrap: wrap;
+  list-style-type: none;
+  margin-top: 20px;
 
   &__item {
-    width: 100%;
-    padding: 10px;
-    flex: 1 0 300px;
     display: flex;
+    flex: 1 0 300px;
+    padding: 10px;
+    width: 100%;
   }
 }
 
@@ -24,8 +24,8 @@
 
   &__link {
     flex-grow: 1 1 400px;
-    margin-left: auto;
     font-size: 14px;
+    margin-left: auto;
 
     a {
       color: $text-secondary;

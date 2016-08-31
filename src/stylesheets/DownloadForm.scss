@@ -1,28 +1,29 @@
 @import './shared';
 
 .downloadForm {
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
   width: 100%;
 
   &__input {
     @include makePanel();
+    appearance: none;
     flex: 0 1 500px;
     font-size: 16px;
-    appearance: none;
-    padding: 10px;
+    height: 20px;
     margin-right: 10px;
+    padding: 10px;
   }
 
   &__btn {
+    @include makePanel();
+    background-color: $accent_primary;
+    color: $text_primary;
+    flex: 0 0 70px;
     font-family: 'Open Sans', sans-serif;
     font-size: 18px;
-    @include makePanel();
-    flex: 0 0 70px;
-    height: 38px;
+    height: 40px;
     padding-bottom: 3px;
-    color: $text_primary;
-    background-color: $accent_primary;
   }
 }

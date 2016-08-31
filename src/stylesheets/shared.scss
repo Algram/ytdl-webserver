@@ -1,17 +1,17 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
+$accent_primary: #cc181e;
+
 $text_primary: #eeffff;
 $text_secondary: #d3d0c8;
 
 $background_primary: #202530;
 $background_secondary: #2f343f;
 
-$accent_primary: #cc181e;
-
 @mixin makePanel() {
-  box-shadow: 0 0 5px rgb(40,40,40);
-  border-radius: 2px;
   border: none;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgb(40,40,40);
   outline: none;
 }
 
@@ -30,42 +30,32 @@ body {
   flex-grow: 1 1 400px;
   margin-left: auto;
   margin-top: -3px;
-  width: 60px;
   text-align: center;
+  width: 60px;
 }
 
 .spinner > div {
-  width: 8px;
-  height: 8px;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
   background-color: $text_secondary;
-  margin-left: 5px;
   border-radius: 100%;
   display: inline-block;
-  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
-  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+  height: 8px;
+  margin-left: 5px;
+  width: 8px;
 }
 
 .spinner .bounce1 {
-  -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
 
 .spinner .bounce2 {
-  -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
-}
-
-@-webkit-keyframes sk-bouncedelay {
-  0%, 80%, 100% { -webkit-transform: scale(0) }
-  40% { -webkit-transform: scale(1.0) }
 }
 
 @keyframes sk-bouncedelay {
   0%, 80%, 100% {
-    -webkit-transform: scale(0);
     transform: scale(0);
   } 40% {
-    -webkit-transform: scale(1.0);
     transform: scale(1.0);
   }
 }
