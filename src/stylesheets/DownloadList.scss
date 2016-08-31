@@ -8,12 +8,27 @@
   flex-wrap: wrap;
   list-style-type: none;
   margin-top: 20px;
+  max-height: 80%;
+  overflow-y: scroll;
+  position:relative;
 
   &__item {
     display: flex;
     flex: 1 0 300px;
     padding: 10px;
     width: 100%;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: darken($background_primary, 2%);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: darken($background_primary, 5%);
   }
 }
 
