@@ -11,11 +11,11 @@ RUN apt-get install -y ffmpeg
 
 RUN mkdir -p /home/app
 WORKDIR /home/app
-RUN mkdir -p /build/temp
+RUN mkdir -p /public/temp
 
 COPY . /home/app
 RUN npm install
 RUN npm run build
 
 EXPOSE 3000
-CMD [ "npm", "run", "hapi" ]
+CMD [ "npm", "start" ]
