@@ -8,10 +8,11 @@ RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
 RUN apt-get install -y nodejs
 RUN apt-get install -y ffmpeg
+RUN apt-get install -y youtube-dl
 
 RUN mkdir -p /home/app
 WORKDIR /home/app
-RUN mkdir -p /public/temp
+RUN mkdir -p public/temp
 
 COPY . /home/app
 RUN npm install
