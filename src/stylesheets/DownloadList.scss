@@ -9,7 +9,7 @@
   list-style-type: none;
   margin-top: 20px;
   max-height: 80%;
-  overflow-y: scroll;
+  overflow-y: auto;
   position:relative;
 
   &__item {
@@ -24,11 +24,11 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: darken($background_primary, 2%);
+    background: $background_secondary;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: darken($background_primary, 5%);
+    background: darken($background_primary, 2%);
   }
 }
 
