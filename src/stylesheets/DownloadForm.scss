@@ -16,9 +16,12 @@
   }
 
   &__btn {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 18px;
     @include makePanel();
     flex: 0 0 70px;
-    padding: 11px;
+    height: 38px;
+    padding-bottom: 3px;
     color: $text_primary;
     background-color: $accent_primary;
   }

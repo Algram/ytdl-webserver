@@ -21516,8 +21516,6 @@
 	  return DownloadPanel;
 	}(_react.Component);
 
-	DownloadPanel.propTypes = {};
-
 	exports.default = DownloadPanel;
 
 /***/ },
@@ -21578,7 +21576,6 @@
 	}(_react.Component);
 
 	DownloadForm.propTypes = {
-	  name: _react.PropTypes.string,
 	  onSubmit: _react.PropTypes.func
 	};
 
@@ -21619,7 +21616,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  -webkit-box-flex: 1 1 400px;\n      -ms-flex-positive: 1 1 400px;\n          flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  width: 60px;\n  text-align: center; }\n\n.spinner > div {\n  width: 8px;\n  height: 8px;\n  background-color: #d3d0c8;\n  margin-left: 5px;\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both; }\n\n.spinner .bounce1 {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s; }\n\n@-webkit-keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    -webkit-transform: scale(0); }\n  40% {\n    -webkit-transform: scale(1); } }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0); }\n  40% {\n    -webkit-transform: scale(1);\n    transform: scale(1); } }\n\n.downloadForm {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%; }\n  .downloadForm__input {\n    box-shadow: 0 0 5px #282828;\n    border-radius: 2px;\n    border: none;\n    outline: none;\n    -webkit-box-flex: 0;\n        -ms-flex: 0 1 500px;\n            flex: 0 1 500px;\n    font-size: 16px;\n    -webkit-appearance: none;\n       -moz-appearance: none;\n            appearance: none;\n    padding: 10px;\n    margin-right: 10px; }\n  .downloadForm__btn {\n    box-shadow: 0 0 5px #282828;\n    border-radius: 2px;\n    border: none;\n    outline: none;\n    -webkit-box-flex: 0;\n        -ms-flex: 0 0 70px;\n            flex: 0 0 70px;\n    padding: 11px;\n    color: #eeffff;\n    background-color: #cc181e; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  -webkit-box-flex: 1 1 400px;\n      -ms-flex-positive: 1 1 400px;\n          flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  width: 60px;\n  text-align: center; }\n\n.spinner > div {\n  width: 8px;\n  height: 8px;\n  background-color: #d3d0c8;\n  margin-left: 5px;\n  border-radius: 100%;\n  display: inline-block;\n  -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both; }\n\n.spinner .bounce1 {\n  -webkit-animation-delay: -0.32s;\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  -webkit-animation-delay: -0.16s;\n  animation-delay: -0.16s; }\n\n@-webkit-keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    -webkit-transform: scale(0); }\n  40% {\n    -webkit-transform: scale(1); } }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    -webkit-transform: scale(0);\n    transform: scale(0); }\n  40% {\n    -webkit-transform: scale(1);\n    transform: scale(1); } }\n\n.downloadForm {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-pack: center;\n      -ms-flex-pack: center;\n          justify-content: center;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%; }\n  .downloadForm__input {\n    box-shadow: 0 0 5px #282828;\n    border-radius: 2px;\n    border: none;\n    outline: none;\n    -webkit-box-flex: 0;\n        -ms-flex: 0 1 500px;\n            flex: 0 1 500px;\n    font-size: 16px;\n    -webkit-appearance: none;\n       -moz-appearance: none;\n            appearance: none;\n    padding: 10px;\n    margin-right: 10px; }\n  .downloadForm__btn {\n    box-shadow: 0 0 5px #282828;\n    border-radius: 2px;\n    border: none;\n    outline: none;\n    -webkit-box-flex: 0;\n        -ms-flex: 0 0 70px;\n            flex: 0 0 70px;\n    padding: 11px;\n    color: #eeffff;\n    background-color: #cc181e; }\n    .downloadForm__btn:before {\n      width: 0;\n      height: 0;\n      border-style: solid;\n      border-width: 50px 0 50px 80px;\n      border-color: transparent transparent transparent #ffffff; }\n", ""]);
 
 	// exports
 

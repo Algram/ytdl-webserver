@@ -20,7 +20,7 @@ module.exports = {
     },
     {
       test: /\.scss$/,
-      loader: 'style!css!autoprefixer!sass'
+      loader: 'style!css!postcss!sass'
       /* loader: ExtractTextPlugin.extract(
         'style-loader', 'css-loader!autoprefixer-loader!sass-loader')*/
     }]

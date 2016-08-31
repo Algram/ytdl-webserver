@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server/server.js",
-    "dev": "webpack-dev-server --content-base build --hot --inline",
+    "dev": "webpack-dev-server --content-base public --hot --inline",
     "build": "webpack --progress --colors",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -41,6 +41,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.0",
     "eslint-plugin-react": "^6.1.2",
     "node-sass": "^3.8.0",
+    "postcss-loader": "^0.11.1",
     "sass-loader": "^4.0.0",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
