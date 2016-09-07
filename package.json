@@ -26,6 +26,7 @@
     "inert": "^4.0.2",
     "react": "^15.3.1",
     "react-dom": "^15.3.1",
+    "validator": "^5.6.0",
     "youtube-dl": "^1.11.1"
   },
   "devDependencies": {

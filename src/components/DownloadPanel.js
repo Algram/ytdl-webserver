@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import DownloadForm from './DownloadForm';
 import DownloadList from './DownloadList';
 import { post } from '../javascripts/helpers';
+import { isURL } from 'validator';
 import '../stylesheets/DownloadPanel.scss';
 
 class DownloadPanel extends Component {
@@ -24,6 +25,12 @@ class DownloadPanel extends Component {
     }
 
     urlInput.value = '';
+
+    if (!isURL(url)) {
+      urlInput.classList.add('error');
+      console.log('not valid');
+      return;
+    }
 
     // Provide instant feedback by adding as much as we know to state
     let videos = this.state.videos;

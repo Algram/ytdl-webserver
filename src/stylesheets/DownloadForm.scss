@@ -25,5 +25,10 @@
     font-size: 18px;
     height: 40px;
     padding-bottom: 3px;
+    outline: none;
+
+    &:active {
+      background-color: darken($accent_primary, 10%);
+    }
   }
 }
