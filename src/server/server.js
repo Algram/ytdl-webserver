@@ -16,6 +16,8 @@ server.connection({ port: 3000 });
 
 server.register(Inert, () => {});
 
+// TODO add notifications to app
+// TODO add local storage
 server.route({
   method: 'GET',
   path: '/{path*}',
@@ -39,9 +41,9 @@ server.route({
     };
 
     youtube.download(url, options)
-      .then(video => {
-        reply(video);
-      });
+    .then(video => {
+      reply(video);
+    });
   }
 });
 
