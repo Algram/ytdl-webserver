@@ -1,6 +1,18 @@
 const path = require('path');
+const fs = require('fs');
 const ffmpeg = require('fluent-ffmpeg');
 const youtubeDl = require('youtube-dl');
+
+
+function exists(filename, cb) {
+  fs.access(filename, fs.F_OK, (err) => {
+    if (!err) {
+      cb(true);
+    } else {
+      cb(false);
+    }
+  });
+}
 
 function download(url, options = {
   path: 'downloads',
@@ -26,20 +38,29 @@ function download(url, options = {
                   .replace('.mp4', '')
                   .substring(0, filename.length - 16);
 
-      // Convert to audio
-      ffmpeg({ source: video })
-        .on('end', () => {
-          const videoObj = {
-            name: filename,
-            url,
-            downloading: false,
-            format
-          };
 
+      const filePath = path.join(options.path, `${filename}.${format}`);
+
+      exists(filePath, (doesExist) => {
+        const videoObj = {
+          name: filename,
+          url,
+          downloading: false,
+          format
+        };
+
+        if (!doesExist) {
+          // Convert to audio
+          ffmpeg({ source: video })
+          .on('end', () => {
+            resolve(videoObj);
+          })
+          .toFormat(format)
+          .save(filePath);
+        } else {
           resolve(videoObj);
-        })
-        .toFormat(format)
-        .save(path.join(options.path, `${filename}.${format}`));
+        }
+      });
     });
   });
 }

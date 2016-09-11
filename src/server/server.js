@@ -17,7 +17,7 @@ server.connection({ port: 3000 });
 server.register(Inert, () => {});
 
 // TODO add notifications to app
-// TODO add local storage
+// TODO remove duplicate downloads from ui
 server.route({
   method: 'GET',
   path: '/{path*}',
