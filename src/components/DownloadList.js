@@ -27,14 +27,15 @@ class DownloadList extends Component {
             }
           </li>
         )}
-        <li className="downloadList__clear"><a href="#">Clear all</a></li>
+        <li className="downloadList__clear" onClick={this.props.onClearClick}>Clear all</li>
       </ul>
     );
   }
 }
 
 DownloadList.propTypes = {
-  videos: PropTypes.array
+  videos: PropTypes.array,
+  onClearClick: PropTypes.func
 };
 
 

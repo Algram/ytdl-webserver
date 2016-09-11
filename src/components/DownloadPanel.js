@@ -16,8 +16,13 @@ class DownloadPanel extends Component {
     const storedVideos = localStorage.getItem('videos');
     this.state = { videos: storedVideos || [] };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleClearClick = this.handleClearClick.bind(this);
   }
 
+  handleClearClick() {
+    localStorage.removeItem('videos');
+    this.setState({ videos: [] });
+  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -62,7 +67,7 @@ class DownloadPanel extends Component {
     return (
       <div className="downloadPanel">
         <DownloadForm onSubmit={this.handleSubmit} />
-        <DownloadList videos={this.state.videos} />
+        <DownloadList videos={this.state.videos} onClearClick={this.handleClearClick} />
       </div>
     );
   }
