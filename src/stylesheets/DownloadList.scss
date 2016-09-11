@@ -20,15 +20,16 @@
   }
 
   &__clear {
-    background: darken($background_secondary, 2%);
+    background: $background_secondary;
     border-top: 1px solid $background_primary;
     color: $text-secondary;
-    padding: 8px;
+    margin-top: 10px;
+    padding: 5px;
     text-align: center;
     width: 100%;
 
     &:hover {
-      background: $background_secondary;
+      background: darken($background_secondary, 2%);
       cursor: pointer;
     }
   }

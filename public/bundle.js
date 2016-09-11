@@ -21471,10 +21471,17 @@
 	    var storedVideos = _localStorage2.default.getItem('videos');
 	    _this.state = { videos: storedVideos || [] };
 	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    _this.handleClearClick = _this.handleClearClick.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(DownloadPanel, [{
+	    key: 'handleClearClick',
+	    value: function handleClearClick() {
+	      _localStorage2.default.removeItem('videos');
+	      this.setState({ videos: [] });
+	    }
+	  }, {
 	    key: 'handleSubmit',
 	    value: function handleSubmit(e) {
 	      var _this2 = this;
@@ -21523,7 +21530,7 @@
 	        'div',
 	        { className: 'downloadPanel' },
 	        _react2.default.createElement(_DownloadForm2.default, { onSubmit: this.handleSubmit }),
-	        _react2.default.createElement(_DownloadList2.default, { videos: this.state.videos })
+	        _react2.default.createElement(_DownloadList2.default, { videos: this.state.videos, onClearClick: this.handleClearClick })
 	      );
 	    }
 	  }]);
@@ -24565,7 +24572,12 @@
 	              )
 	            )
 	          );
-	        })
+	        }),
+	        this.props.videos.length === 0 ? '' : _react2.default.createElement(
+	          'li',
+	          { className: 'downloadList__clear', onClick: this.props.onClearClick },
+	          'Clear all'
+	        )
 	      );
 	    }
 	  }]);
@@ -24574,7 +24586,8 @@
 	}(_react.Component);
 
 	DownloadList.propTypes = {
-	  videos: _react.PropTypes.array
+	  videos: _react.PropTypes.array,
+	  onClearClick: _react.PropTypes.func
 	};
 
 	exports.default = DownloadList;
@@ -24614,7 +24627,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadList {\n  border: none;\n  border-radius: 2px;\n  box-shadow: 0 0 5px #282828;\n  outline: none;\n  background: #2f343f;\n  display: flex;\n  flex: 0 1 600px;\n  flex-wrap: wrap;\n  list-style-type: none;\n  margin-top: 20px;\n  max-height: 80%;\n  overflow-y: auto;\n  position: relative; }\n  .downloadList__item {\n    display: flex;\n    flex: 1 0 300px;\n    padding: 10px;\n    width: 100%; }\n  .downloadList::-webkit-scrollbar {\n    width: 8px; }\n  .downloadList::-webkit-scrollbar-track {\n    background: #2f343f; }\n  .downloadList::-webkit-scrollbar-thumb {\n    background: #1c202a; }\n\n.video__name {\n  color: #d3d0c8; }\n\n.video__link {\n  flex-grow: 1 1 400px;\n  font-size: 14px;\n  margin-left: auto; }\n  .video__link a {\n    color: #d3d0c8;\n    text-decoration: none; }\n    .video__link a:hover {\n      text-decoration: underline; }\n    .video__link a:visited {\n      color: #d3d0c8; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadList {\n  border: none;\n  border-radius: 2px;\n  box-shadow: 0 0 5px #282828;\n  outline: none;\n  background: #2f343f;\n  display: flex;\n  flex: 0 1 600px;\n  flex-wrap: wrap;\n  list-style-type: none;\n  margin-top: 20px;\n  max-height: 80%;\n  overflow-y: auto;\n  position: relative; }\n  .downloadList__item {\n    display: flex;\n    flex: 1 0 300px;\n    padding: 10px;\n    width: 100%; }\n  .downloadList__clear {\n    background: #2f343f;\n    border-top: 1px solid #202530;\n    color: #d3d0c8;\n    margin-top: 10px;\n    padding: 5px;\n    text-align: center;\n    width: 100%; }\n    .downloadList__clear:hover {\n      background: #2b2f39;\n      cursor: pointer; }\n  .downloadList::-webkit-scrollbar {\n    width: 8px; }\n  .downloadList::-webkit-scrollbar-track {\n    background: #2f343f; }\n  .downloadList::-webkit-scrollbar-thumb {\n    background: #1c202a; }\n\n.video__name {\n  color: #d3d0c8; }\n\n.video__link {\n  flex-grow: 1 1 400px;\n  font-size: 14px;\n  margin-left: auto; }\n  .video__link a {\n    color: #d3d0c8;\n    text-decoration: none; }\n    .video__link a:hover {\n      text-decoration: underline; }\n    .video__link a:visited {\n      color: #d3d0c8; }\n", ""]);
 
 	// exports
 
@@ -24710,9 +24723,14 @@
 	  localStorage.setItem(key, JSON.stringify(value));
 	}
 
+	function removeItem(key) {
+	  localStorage.removeItem(key);
+	}
+
 	module.exports = {
 	  getItem: getItem,
-	  setItem: setItem
+	  setItem: setItem,
+	  removeItem: removeItem
 	};
 
 /***/ },
