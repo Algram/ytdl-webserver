@@ -1,19 +1,23 @@
 /* global document */
 
 import React, { Component } from 'react';
+import { isURL } from 'validator';
 import DownloadForm from './DownloadForm';
 import DownloadList from './DownloadList';
 import { post } from '../javascripts/helpers';
-import { isURL } from 'validator';
+import localStorage from '../javascripts/localStorage';
 import '../stylesheets/DownloadPanel.scss';
 
 class DownloadPanel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { videos: [] };
+    console.log(localStorage.getItem('videos'));
+    const storedVideos = localStorage.getItem('videos');
+    this.state = { videos: storedVideos || [] };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
+
 
   handleSubmit(e) {
     e.preventDefault();
@@ -48,6 +52,7 @@ class DownloadPanel extends Component {
       );
 
       this.setState({ videos: updatedVideos });
+      localStorage.setItem('videos', this.state.videos);
     }, error => {
       console.log('Failed!', error);
     });

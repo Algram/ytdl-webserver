@@ -1,9 +1,7 @@
-/* global window */
-
-const localStorage = window.localStorage;
+/* global localStorage */
 
 function getItem(key) {
-  JSON.parse(localStorage.getItem(key));
+  return JSON.parse(localStorage.getItem(key));
 }
 
 function setItem(key, value) {
