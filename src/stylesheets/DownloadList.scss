@@ -19,6 +19,32 @@
     width: 100%;
   }
 
+  &__clear {
+    border-top: 1px solid $background_primary;
+    padding: 8px;
+    width: 100%;
+    text-align: center;
+    background: darken($background_secondary, 2%);
+
+    &:hover {
+      background: $background_secondary;
+      cursor: pointer;
+    }
+
+    a {
+      color: $text-secondary;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &:visited {
+        color: $text-secondary;
+      }
+    }
+  }
+
   &::-webkit-scrollbar {
     width: 8px;
   }

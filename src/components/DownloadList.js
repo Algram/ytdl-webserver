@@ -27,6 +27,7 @@ class DownloadList extends Component {
             }
           </li>
         )}
+        <li className="downloadList__clear"><a href="#">Clear all</a></li>
       </ul>
     );
   }
