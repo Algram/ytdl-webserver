@@ -1,7 +1,7 @@
 # ytdl-webserver
 Webserver for downloading youtube videos. Ready for docker.
 
-![Imgur](http://i.imgur.com/FNcKnfQ.gif)
+![Demovideo](http://imgur.com/iEpA1oQ.gif)
 
 
 ## Installation
