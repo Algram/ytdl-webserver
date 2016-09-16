@@ -50,10 +50,12 @@
 .video {
   &__name {
     color: $text-secondary;
+    word-break: break-all;
+    word-wrap: break-word;
   }
 
   &__link {
-    flex-grow: 1 1 400px;
+    flex: 1 1 400px;
     font-size: 14px;
     margin-left: auto;
 

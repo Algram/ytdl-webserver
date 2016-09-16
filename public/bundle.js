@@ -183,25 +183,40 @@
 	var cachedSetTimeout;
 	var cachedClearTimeout;
 
+	function defaultSetTimout() {
+	    throw new Error('setTimeout has not been defined');
+	}
+	function defaultClearTimeout () {
+	    throw new Error('clearTimeout has not been defined');
+	}
 	(function () {
 	    try {
-	        cachedSetTimeout = setTimeout;
-	    } catch (e) {
-	        cachedSetTimeout = function () {
-	            throw new Error('setTimeout is not defined');
+	        if (typeof setTimeout === 'function') {
+	            cachedSetTimeout = setTimeout;
+	        } else {
+	            cachedSetTimeout = defaultSetTimout;
 	        }
+	    } catch (e) {
+	        cachedSetTimeout = defaultSetTimout;
 	    }
 	    try {
-	        cachedClearTimeout = clearTimeout;
-	    } catch (e) {
-	        cachedClearTimeout = function () {
-	            throw new Error('clearTimeout is not defined');
+	        if (typeof clearTimeout === 'function') {
+	            cachedClearTimeout = clearTimeout;
+	        } else {
+	            cachedClearTimeout = defaultClearTimeout;
 	        }
+	    } catch (e) {
+	        cachedClearTimeout = defaultClearTimeout;
 	    }
 	} ())
 	function runTimeout(fun) {
 	    if (cachedSetTimeout === setTimeout) {
 	        //normal enviroments in sane situations
+	        return setTimeout(fun, 0);
+	    }
+	    // if setTimeout wasn't available but was latter defined
+	    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+	        cachedSetTimeout = setTimeout;
 	        return setTimeout(fun, 0);
 	    }
 	    try {
@@ -222,6 +237,11 @@
 	function runClearTimeout(marker) {
 	    if (cachedClearTimeout === clearTimeout) {
 	        //normal enviroments in sane situations
+	        return clearTimeout(marker);
+	    }
+	    // if clearTimeout wasn't available but was latter defined
+	    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+	        cachedClearTimeout = clearTimeout;
 	        return clearTimeout(marker);
 	    }
 	    try {
@@ -21792,7 +21812,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var version = '5.6.0';
+	var version = '5.7.0';
 
 	var validator = {
 	  version: version,
@@ -22294,11 +22314,28 @@
 	  protocols: ['http', 'https', 'ftp'],
 	  require_tld: true,
 	  require_protocol: false,
+	  require_host: true,
 	  require_valid_protocol: true,
 	  allow_underscores: false,
 	  allow_trailing_dot: false,
 	  allow_protocol_relative_urls: false
 	};
+
+	var wrapped_ipv6 = /^\[([^\]]+)\](?::([0-9]+))?$/;
+
+	function isRegExp(obj) {
+	  return Object.prototype.toString.call(obj) === '[object RegExp]';
+	}
+
+	function checkHost(host, matches) {
+	  for (var i = 0; i < matches.length; i++) {
+	    var match = matches[i];
+	    if (host === match || isRegExp(match) && match.test(host)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
 
 	function isURL(url, options) {
 	  (0, _assertString2.default)(url);
@@ -22315,7 +22352,8 @@
 	      hostname = void 0,
 	      port = void 0,
 	      port_str = void 0,
-	      split = void 0;
+	      split = void 0,
+	      ipv6 = void 0;
 
 	  split = url.split('#');
 	  url = split.shift();
@@ -22338,6 +22376,11 @@
 
 	  split = url.split('/');
 	  url = split.shift();
+
+	  if (url === '' && !options.require_host) {
+	    return true;
+	  }
+
 	  split = url.split('@');
 	  if (split.length > 1) {
 	    auth = split.shift();
@@ -22346,24 +22389,41 @@
 	    }
 	  }
 	  hostname = split.join('@');
-	  split = hostname.split(':');
-	  host = split.shift();
-	  if (split.length) {
-	    port_str = split.join(':');
+
+	  port_str = ipv6 = null;
+	  var ipv6_match = hostname.match(wrapped_ipv6);
+	  if (ipv6_match) {
+	    host = '';
+	    ipv6 = ipv6_match[1];
+	    port_str = ipv6_match[2] || null;
+	  } else {
+	    split = hostname.split(':');
+	    host = split.shift();
+	    if (split.length) {
+	      port_str = split.join(':');
+	    }
+	  }
+
+	  if (port_str !== null) {
 	    port = parseInt(port_str, 10);
 	    if (!/^[0-9]+$/.test(port_str) || port <= 0 || port > 65535) {
 	      return false;
 	    }
 	  }
-	  if (!(0, _isIP2.default)(host) && !(0, _isFQDN2.default)(host, options) && host !== 'localhost') {
+
+	  if (!(0, _isIP2.default)(host) && !(0, _isFQDN2.default)(host, options) && (!ipv6 || !(0, _isIP2.default)(ipv6, 6)) && host !== 'localhost') {
 	    return false;
 	  }
-	  if (options.host_whitelist && options.host_whitelist.indexOf(host) === -1) {
+
+	  host = host || ipv6;
+
+	  if (options.host_whitelist && !checkHost(host, options.host_whitelist)) {
 	    return false;
 	  }
-	  if (options.host_blacklist && options.host_blacklist.indexOf(host) !== -1) {
+	  if (options.host_blacklist && checkHost(host, options.host_blacklist)) {
 	    return false;
 	  }
+
 	  return true;
 	}
 	module.exports = exports['default'];
@@ -22551,7 +22611,9 @@
 	  'hu-HU': /^[A-ZÁÉÍÓÖŐÚÜŰ]+$/i,
 	  'pl-PL': /^[A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
 	  'pt-PT': /^[A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]+$/i,
-	  'ru-RU': /^[А-ЯЁа-яё]+$/i,
+	  'ru-RU': /^[А-ЯЁ]+$/i,
+	  'sr-RS@latin': /^[A-ZČĆŽŠĐ]+$/i,
+	  'sr-RS': /^[А-ЯЂЈЉЊЋЏ]+$/i,
 	  'tr-TR': /^[A-ZÇĞİıÖŞÜ]+$/i,
 	  ar: /^[ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/
 	};
@@ -22566,7 +22628,9 @@
 	  'nl-NL': /^[0-9A-ZÉËÏÓÖÜ]+$/i,
 	  'pl-PL': /^[0-9A-ZĄĆĘŚŁŃÓŻŹ]+$/i,
 	  'pt-PT': /^[0-9A-ZÃÁÀÂÇÉÊÍÕÓÔÚÜ]+$/i,
-	  'ru-RU': /^[0-9А-ЯЁа-яё]+$/i,
+	  'ru-RU': /^[0-9А-ЯЁ]+$/i,
+	  'sr-RS@latin': /^[0-9A-ZČĆŽŠĐ]+$/i,
+	  'sr-RS': /^[0-9А-ЯЂЈЉЊЋЏ]+$/i,
 	  'tr-TR': /^[0-9A-ZÇĞİıÖŞÜ]+$/i,
 	  ar: /^[٠١٢٣٤٥٦٧٨٩0-9ءآأؤإئابةتثجحخدذرزسشصضطظعغفقكلمنهوىيًٌٍَُِّْٰ]+$/
 	};
@@ -22578,6 +22642,9 @@
 	  alpha[locale] = alpha['en-US'];
 	  alphanumeric[locale] = alphanumeric['en-US'];
 	}
+
+	alpha['pt-BR'] = alpha['pt-PT'];
+	alphanumeric['pt-BR'] = alphanumeric['pt-PT'];
 
 	// Source: http://www.localeplanet.com/java/
 	var arabicLocales = exports.arabicLocales = ['AE', 'BH', 'DZ', 'EG', 'IQ', 'JO', 'KW', 'LB', 'LY', 'MA', 'QM', 'QA', 'SA', 'SD', 'SY', 'TN', 'YE'];
@@ -23445,7 +23512,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	/* eslint-disable max-len */
-	var creditCard = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})|62[0-9]{14}$/;
+	var creditCard = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})|62[0-9]{14}$/;
 	/* eslint-enable max-len */
 
 	function isCreditCard(str) {
@@ -23640,6 +23707,7 @@
 	  'pt-BR': /^(\+?55|0)\-?[1-9]{2}\-?[2-9]{1}\d{3,4}\-?\d{4}$/,
 	  'pt-PT': /^(\+?351)?9[1236]\d{7}$/,
 	  'ru-RU': /^(\+?7|8)?9\d{9}$/,
+	  'sr-RS': /^(\+3816|06)[- \d]{5,9}$/,
 	  'tr-TR': /^(\+?90|0)?5\d{9}$/,
 	  'vi-VN': /^(\+?84|0)?((1(2([0-9])|6([2-9])|88|99))|(9((?!5)[0-9])))([0-9]{7})$/,
 	  'zh-CN': /^(\+?0?86\-?)?1[345789]\d{9}$/,
@@ -24187,7 +24255,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadForm {\n  align-items: center;\n  display: flex;\n  justify-content: center;\n  width: 100%; }\n  .downloadForm__input {\n    border: none;\n    border-radius: 2px;\n    box-shadow: 0 0 5px #282828;\n    outline: none;\n    appearance: none;\n    flex: 0 1 500px;\n    font-size: 16px;\n    height: 20px;\n    margin-right: 10px;\n    padding: 10px; }\n  .downloadForm__btn {\n    border: none;\n    border-radius: 2px;\n    box-shadow: 0 0 5px #282828;\n    outline: none;\n    background-color: #cc181e;\n    color: #eeffff;\n    flex: 0 0 70px;\n    font-family: 'Open Sans', sans-serif;\n    font-size: 18px;\n    height: 40px;\n    padding-bottom: 3px;\n    outline: none; }\n    .downloadForm__btn:active {\n      background-color: #9e1317; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadForm {\n  align-items: center;\n  display: flex;\n  justify-content: center;\n  width: 100%; }\n  .downloadForm__input {\n    border: none;\n    border-radius: 2px;\n    box-shadow: 0 0 5px #282828;\n    outline: none;\n    appearance: none;\n    flex: 0 1 500px;\n    font-size: 16px;\n    height: 20px;\n    margin-right: 10px;\n    padding: 10px; }\n  .downloadForm__btn {\n    border: none;\n    border-radius: 2px;\n    box-shadow: 0 0 5px #282828;\n    outline: none;\n    background-color: #cc181e;\n    color: #eeffff;\n    flex: 0 0 70px;\n    font-family: 'Open Sans', sans-serif;\n    font-size: 18px;\n    height: 40px;\n    padding-bottom: 3px;\n    outline: none; }\n    .downloadForm__btn:active {\n      background-color: #9e1317; }\n", ""]);
 
 	// exports
 
@@ -24627,7 +24695,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadList {\n  border: none;\n  border-radius: 2px;\n  box-shadow: 0 0 5px #282828;\n  outline: none;\n  background: #2f343f;\n  display: flex;\n  flex: 0 1 600px;\n  flex-wrap: wrap;\n  list-style-type: none;\n  margin-top: 20px;\n  max-height: 80%;\n  overflow-y: auto;\n  position: relative; }\n  .downloadList__item {\n    display: flex;\n    flex: 1 0 300px;\n    padding: 10px;\n    width: 100%; }\n  .downloadList__clear {\n    background: #2f343f;\n    border-top: 1px solid #202530;\n    color: #d3d0c8;\n    margin-top: 10px;\n    padding: 5px;\n    text-align: center;\n    width: 100%; }\n    .downloadList__clear:hover {\n      background: #2b2f39;\n      cursor: pointer; }\n  .downloadList::-webkit-scrollbar {\n    width: 8px; }\n  .downloadList::-webkit-scrollbar-track {\n    background: #2f343f; }\n  .downloadList::-webkit-scrollbar-thumb {\n    background: #1c202a; }\n\n.video__name {\n  color: #d3d0c8; }\n\n.video__link {\n  flex-grow: 1 1 400px;\n  font-size: 14px;\n  margin-left: auto; }\n  .video__link a {\n    color: #d3d0c8;\n    text-decoration: none; }\n    .video__link a:hover {\n      text-decoration: underline; }\n    .video__link a:visited {\n      color: #d3d0c8; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadList {\n  border: none;\n  border-radius: 2px;\n  box-shadow: 0 0 5px #282828;\n  outline: none;\n  background: #2f343f;\n  display: flex;\n  flex: 0 1 600px;\n  flex-wrap: wrap;\n  list-style-type: none;\n  margin-top: 20px;\n  max-height: 80%;\n  overflow-y: auto;\n  position: relative; }\n  .downloadList__item {\n    display: flex;\n    flex: 1 0 300px;\n    padding: 10px;\n    width: 100%; }\n  .downloadList__clear {\n    background: #2f343f;\n    border-top: 1px solid #202530;\n    color: #d3d0c8;\n    margin-top: 10px;\n    padding: 5px;\n    text-align: center;\n    width: 100%; }\n    .downloadList__clear:hover {\n      background: #2b2f39;\n      cursor: pointer; }\n  .downloadList::-webkit-scrollbar {\n    width: 8px; }\n  .downloadList::-webkit-scrollbar-track {\n    background: #2f343f; }\n  .downloadList::-webkit-scrollbar-thumb {\n    background: #1c202a; }\n\n.video__name {\n  color: #d3d0c8;\n  word-break: break-all;\n  word-wrap: break-word; }\n\n.video__link {\n  flex: 1 1 400px;\n  font-size: 14px;\n  margin-left: auto; }\n  .video__link a {\n    color: #d3d0c8;\n    text-decoration: none; }\n    .video__link a:hover {\n      text-decoration: underline; }\n    .video__link a:visited {\n      color: #d3d0c8; }\n", ""]);
 
 	// exports
 
@@ -24768,7 +24836,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadPanel {\n  align-content: center;\n  align-items: flex-center;\n  display: flex;\n  flex-wrap: wrap;\n  justify-content: center;\n  height: 100vh; }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n\n.downloadPanel {\n  align-content: center;\n  align-items: flex-center;\n  display: flex;\n  flex-wrap: wrap;\n  height: 100vh;\n  justify-content: center;\n  padding: 20px; }\n", ""]);
 
 	// exports
 
@@ -24808,7 +24876,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);", ""]);
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  flex-grow: 1 1 400px;\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0; }\n\nbody {\n  background: #202530;\n  color: #eeffff;\n  font-family: 'Open Sans', sans-serif; }\n\n.spinner {\n  margin-left: auto;\n  margin-top: -3px;\n  text-align: center;\n  width: 60px; }\n\n.spinner > div {\n  animation: sk-bouncedelay 1.4s infinite ease-in-out both;\n  background-color: #d3d0c8;\n  border-radius: 100%;\n  display: inline-block;\n  height: 8px;\n  margin-left: 5px;\n  width: 8px; }\n\n.spinner .bounce1 {\n  animation-delay: -0.32s; }\n\n.spinner .bounce2 {\n  animation-delay: -0.16s; }\n\n@keyframes sk-bouncedelay {\n  0%, 80%, 100% {\n    transform: scale(0); }\n  40% {\n    transform: scale(1); } }\n", ""]);
 
 	// exports
 
