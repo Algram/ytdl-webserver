@@ -37,7 +37,6 @@ class DownloadPanel extends Component {
 
     if (!isURL(url)) {
       urlInput.classList.add('error');
-      console.log('not valid');
       return;
     }
 
