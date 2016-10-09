@@ -20,6 +20,8 @@ class DownloadList extends Component {
               :
               <span className="video__link">
                 <a
+                  onClick={this.props.onVideoDownloadClick}
+                  data-orig={video.url}
                   href={`/request/${video.name}.${video.format}`}
                   download={`${video.name}.${video.format}`}
                 >Download</a>
@@ -37,7 +39,8 @@ class DownloadList extends Component {
 
 DownloadList.propTypes = {
   videos: PropTypes.array,
-  onClearClick: PropTypes.func
+  onClearClick: PropTypes.func,
+  onVideoDownloadClick: PropTypes.func
 };
 
 

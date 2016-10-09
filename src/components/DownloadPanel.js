@@ -17,11 +17,24 @@ class DownloadPanel extends Component {
     this.state = { videos: storedVideos || [] };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleClearClick = this.handleClearClick.bind(this);
+    this.handleVideoDownloadClick = this.handleVideoDownloadClick.bind(this);
   }
 
   handleClearClick() {
-    localStorage.removeItem('videos');
     this.setState({ videos: [] });
+    localStorage.removeItem('videos');
+  }
+
+  handleVideoDownloadClick(e) {
+    const videos = this.state.videos;
+    const videoUrl = e.target.getAttribute('data-orig');
+
+    const updatedVideos = videos.filter(video => video.url !== videoUrl);
+
+    this.setState({ videos: updatedVideos });
+
+    // Can't use this.state.videos because this is bound to the function
+    localStorage.setItem('videos', updatedVideos);
   }
 
   handleSubmit(e) {
@@ -67,7 +80,11 @@ class DownloadPanel extends Component {
     return (
       <div className="downloadPanel">
         <DownloadForm onSubmit={this.handleSubmit} />
-        <DownloadList videos={this.state.videos} onClearClick={this.handleClearClick} />
+        <DownloadList
+          videos={this.state.videos}
+          onClearClick={this.handleClearClick}
+          onVideoDownloadClick={this.handleVideoDownloadClick}
+        />
       </div>
     );
   }
