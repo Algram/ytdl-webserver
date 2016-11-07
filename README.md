@@ -1,6 +1,6 @@
 # ytdl-webserver
 Webserver for downloading youtube videos. Ready for docker.
-If you ahve questions, read the [blog post](https://blog.rphl.io/selfhosted-youtube-downloader-with-docker/).
+If you have questions, read the [blog post](https://blog.rphl.io/selfhosted-youtube-downloader-with-docker/).
 
 ![Demovideo](http://imgur.com/iEpA1oQ.gif)
 
