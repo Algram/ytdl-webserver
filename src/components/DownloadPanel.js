@@ -49,8 +49,14 @@ class DownloadPanel extends Component {
     urlInput.value = '';
 
     if (!isURL(url)) {
-      urlInput.classList.add('error');
-      console.log('not valid');
+      urlInput.classList.add('downloadForm__input--error');
+      urlInput.placeholder = 'Invalid URL';
+
+      setTimeout(() => {
+        urlInput.classList.remove('downloadForm__input--error');
+        urlInput.placeholder = '';
+      }, 2000);
+
       return;
     }
 
