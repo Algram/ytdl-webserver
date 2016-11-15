@@ -1,7 +1,7 @@
 {
   "name": "ytdl-webserver",
   "version": "1.0.0",
-  "description": "",
+  "description": "Webserver for downloading youtube videos. Ready for docker.",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/server/server.js",
