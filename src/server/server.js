@@ -1,7 +1,7 @@
-const Hapi = require('hapi');
-const Inert = require('inert');
-const path = require('path');
-const youtube = require('./handlers/youtube');
+const Hapi = require('hapi')
+const Inert = require('inert')
+const path = require('path')
+const youtube = require('./handlers/youtube')
 
 const server = new Hapi.Server({
   connections: {
@@ -11,10 +11,10 @@ const server = new Hapi.Server({
       }
     }
   }
-});
-server.connection({ port: 3000 });
+})
+server.connection({ port: 3000 })
 
-server.register(Inert, () => {});
+server.register(Inert, () => {})
 
 // TODO add notifications to app
 // TODO remove duplicate downloads from ui
@@ -28,37 +28,37 @@ server.route({
       index: true
     }
   }
-});
+})
 
 server.route({
   method: 'POST',
   path: '/download',
   handler: (request, reply) => {
-    const url = request.payload.url;
+    const url = request.payload.url
     const options = {
       path: path.join(__dirname, '../../public/temp'),
       audioOnly: true
-    };
+    }
 
     youtube.download(url, options)
-    .then(video => {
-      reply(video);
-    });
+      .then(video => {
+        reply(video)
+      })
   }
-});
+})
 
 server.route({
   method: 'GET',
   path: '/request/{video}',
   handler: (request, reply) => {
-    const videoName = encodeURIComponent(request.params.video);
-    reply.file(path.join('temp', decodeURIComponent(videoName)));
+    const videoName = encodeURIComponent(request.params.video)
+    reply.file(path.join('temp', decodeURIComponent(videoName)))
   }
-});
+})
 
 server.start(err => {
   if (err) {
-    throw err;
+    throw err
   }
-  console.log(`Server running at: ${server.info.uri}`);
-});
+  console.log(`Server running at: ${server.info.uri}`)
+})

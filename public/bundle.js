@@ -24163,7 +24163,7 @@
 	        _react2.default.createElement(
 	          'button',
 	          { className: 'downloadForm__btn' },
-	          '▶'
+	          '\u25B6'
 	        )
 	      );
 	    }

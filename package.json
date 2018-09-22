@@ -1,6 +1,6 @@
 {
   "name": "ytdl-webserver",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Webserver for downloading youtube videos. Ready for docker.",
   "main": "index.js",
   "scripts": {
@@ -43,6 +43,7 @@
     "node-sass": "^3.8.0",
     "postcss-loader": "^0.11.1",
     "sass-loader": "^4.0.0",
+    "standard": "^12.0.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.15.0"
