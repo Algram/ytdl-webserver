@@ -1,0 +1,15 @@
+language: generic
+services: docker
+
+before_script:
+  - docker build -t $DOCKER_TAG .
+
+script:
+  - docker run -d -p 3000:3000 --name ytdl $DOCKER_TAG
+  - sleep 10; ./test/e2e.js
+
+deploy:
+  provider: script
+  script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD && docker push $DOCKER_TAG
+  on:
+    branch: master
