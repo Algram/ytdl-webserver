@@ -3,20 +3,27 @@
 #
 FROM ubuntu:16.04
 
-RUN apt-get update
-RUN apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get install -y nodejs
-RUN apt-get install -y ffmpeg
-RUN apt-get install -y youtube-dl
-
-RUN mkdir -p /home/app
 WORKDIR /home/app
-RUN mkdir -p public/temp
 
-COPY . /home/app
-RUN npm install
-RUN npm run build
+RUN apt-get update \
+    && apt-get install -y curl ffmpeg \
+    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g npm@latest \
+    && rm -rf /var/lib/apt/lists/*
+
+# This is on a separate line because youtube-dl needs to be frequently updated
+RUN apt-get update \
+    && apt-get install -y youtube-dl \
+    && rm -rf /var/lib/apt/lists/*
+
+# only install node_modules if the package.json changes
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY . ./
+RUN mkdir -p public/temp \
+    && npm run build
 
 EXPOSE 3000
 CMD [ "npm", "start" ]
