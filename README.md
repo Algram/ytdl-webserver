@@ -12,6 +12,13 @@ npm install && npm start
 ```
 
 ### As a docker image
+#### Basic
+```
+docker build -t <your username>/ytdl-webserver .
+docker run -p 3000:3000 -d <your username>/ytdl-webserver
+```
+
+#### Advanced
 Build the docker image, create a directory to hold and access the downloaded videos on the host, and then start a container instance of the image.  
 ```
 docker build -t <your username>/ytdl-webserver .
