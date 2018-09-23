@@ -20,14 +20,11 @@ RUN apk add --update --no-cache \
     rm /usr/lib/python*/pydoc.py                        && \
     rm -rf /root/.cache /var/cache /usr/share/terminfo  && \
     ln /usr/bin/python3.6 /usr/bin/python               && \
+    npm install -g npm@latest                           && \
+    npm cache clean --force                             && \
     mkdir -p public/temp
 
-# install the latest npm and clear the cache
-RUN npm install -g npm@latest && \
-    npm cache clean --force
-
 COPY package.json package-lock.json ./
-
 
 FROM base as dev
 
