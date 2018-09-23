@@ -1,24 +1,4 @@
-# python 3.7 and node 8 LTS
-FROM austinpray/python-node:3.7-8 as dev
-
-WORKDIR /home/app
-EXPOSE 3000
-CMD [ "npm", "start" ]
-
-RUN apt-get update \
-    && apt-get install -y ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
-
-# only install node_modules if the package.json changes
-# youtube-dl is installed via node-youtube-dl dep
-COPY package.json package-lock.json ./
-RUN npm ci
-
-COPY . ./
-RUN mkdir -p public/temp \
-    && npm run build
-
-FROM alpine:3.8 as prod
+M alpine:3.8 as base
 
 WORKDIR /home/app
 EXPOSE 3000
@@ -42,15 +22,35 @@ RUN apk add --update --no-cache \
     ln /usr/bin/python3.6 /usr/bin/python               && \
     mkdir -p public/temp
 
-# install the latest npm and only the production/non-dev dependencies
+# install the latest npm and clear the cache
+RUN npm install -g npm@latest && \
+    npm cache clean --force
+
 COPY package.json package-lock.json ./
-RUN npm install -g npm@latest && npm ci --only=production && npm cache clean --force
+
+
+FROM base as dev
+
+# install all dependencies including dev and clear the cache
+RUN npm ci && \
+    npm cache clean --force
 
 # copy over the source code
-COPY src ./src
+COPY . .
+
+# build the frontend
+RUN npm run build
+
+
+FROM base as prod
+
+# install the prod/run/normal dependencies and clear the cache
+RUN npm ci --only=production && \
+    npm cache clean --force
 
 # copy the frontend build over from the dev stage
 COPY --from=dev /home/app/public ./public
 
-# run node server
-CMD ["npm", "start"]
+# copy over the source code
+COPY ./src ./src
+
