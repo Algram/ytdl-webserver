@@ -1,4 +1,4 @@
-M alpine:3.8 as base
+FROM alpine:3.8 as base
 
 WORKDIR /home/app
 EXPOSE 3000
@@ -53,4 +53,3 @@ COPY --from=dev /home/app/public ./public
 
 # copy over the source code
 COPY ./src ./src
-
