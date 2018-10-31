@@ -1,5 +1,6 @@
 const Hapi = require('hapi')
 const Inert = require('inert')
+const mkdirp = require('mkdirp')
 const path = require('path')
 const youtube = require('./handlers/youtube')
 
@@ -39,6 +40,12 @@ server.route({
       path: path.join(__dirname, '../../public/temp'),
       audioOnly: true
     }
+
+    mkdirp(options.path, err => {
+      if (err) {
+        throw err
+      }
+    })
 
     youtube.download(url, options)
       .then(video => {
