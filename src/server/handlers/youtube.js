@@ -32,7 +32,7 @@ function download (url, options = {
 
     // Will be called when the download starts.
     video.on('info', info => {
-      let filename = info.filename
+      let filename = info._filename
       filename = filename
         .replace('.mp4', '')
         .substring(0, filename.length - 16)
