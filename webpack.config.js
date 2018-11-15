@@ -1,5 +1,5 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: './src/main.js',
@@ -10,22 +10,27 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loader: 'babel',
-      query: {
-        presets: ['react', 'es2015']
+    rules: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-react', '@babel/preset-env']
+          }
+        }
+      },
+      {
+        test: /\.scss$/,
+        /*TODO: Add postcss loader here and create a file config with name .postcssrc.js*/
+        loader: 'style-loader!css-loader!sass-loader'
+        /* loader: MiniCssExtractPlugin.loader(
+          'style-loader', 'css-loader!autoprefixer-loader!sass-loader')*/
       }
-    },
-    {
-      test: /\.scss$/,
-      loader: 'style!css!postcss!sass'
-      /* loader: ExtractTextPlugin.extract(
-        'style-loader', 'css-loader!autoprefixer-loader!sass-loader')*/
-    }]
+    ]
   },
   plugins: [
-    new ExtractTextPlugin('style.css', { allChunks: true })
+    new MiniCssExtractPlugin({ filename: 'style.css'})
   ]
 };
