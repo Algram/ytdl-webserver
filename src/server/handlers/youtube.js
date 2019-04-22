@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const ffmpeg = require('fluent-ffmpeg')
-const youtubeDl = require('youtube-dl')
+const youtubeDl = require('@microlink/youtube-dl')
 
 function exists (filename, cb) {
   fs.access(filename, fs.F_OK, (err) => {

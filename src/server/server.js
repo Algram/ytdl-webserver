@@ -1,71 +1,67 @@
-const Hapi = require('hapi')
-const Inert = require('inert')
+const Hapi = require('@hapi/hapi')
+const Inert = require('@hapi/inert')
 const mkdirp = require('mkdirp')
 const path = require('path')
 const youtube = require('./handlers/youtube')
 
 const server = new Hapi.Server({
-  connections: {
-    routes: {
-      files: {
-        relativeTo: path.join(__dirname, '../../public')
-      }
-    }
-  }
-})
-server.connection({ port: 3000 })
-
-server.register(Inert, () => {})
-
-// TODO add notifications to app
-// TODO remove duplicate downloads from ui
-server.route({
-  method: 'GET',
-  path: '/{path*}',
-  handler: {
-    directory: {
-      path: '.',
-      listing: false,
-      index: true
+  port: 3000,
+  routes: {
+    files: {
+      relativeTo: path.join(__dirname, '../../public')
     }
   }
 })
 
-server.route({
-  method: 'POST',
-  path: '/download',
-  handler: (request, reply) => {
-    const url = request.payload.url
-    const options = {
-      path: path.join(__dirname, '../../public/temp'),
-      audioOnly: true
-    }
+const provision = async () => {
+  await server.register(Inert)
 
-    mkdirp(options.path, err => {
-      if (err) {
-        throw err
+  // TODO add notifications to app
+  // TODO remove duplicate downloads from ui
+  server.route({
+    method: 'GET',
+    path: '/{path*}',
+    handler: {
+      directory: {
+        path: '.',
+        listing: false,
+        index: true
       }
-    })
+    }
+  })
 
-    youtube.download(url, options)
-      .then(video => {
-        reply(video)
+  server.route({
+    method: 'POST',
+    path: '/download',
+    handler: (request, reply) => {
+      const url = request.payload.url
+      const options = {
+        path: path.join(__dirname, '../../public/temp'),
+        audioOnly: true
+      }
+
+      mkdirp(options.path, err => {
+        if (err) {
+          throw err
+        }
       })
-  }
-})
 
-server.route({
-  method: 'GET',
-  path: '/request/{video}',
-  handler: (request, reply) => {
-    const videoName = encodeURIComponent(request.params.video)
-    reply.file(path.join('temp', decodeURIComponent(videoName)))
-  }
-})
+      return youtube.download(url, options)
+    }
+  })
 
-server.start(err => {
-  if (err) {
-    throw err
-  }
-  console.log(`Server running at: ${server.info.uri}`)
-})
+  server.route({
+    method: 'GET',
+    path: '/request/{video}',
+    handler: (request, reply) => {
+      const videoName = encodeURIComponent(request.params.video)
+      reply.file(path.join('temp', decodeURIComponent(videoName)))
+    }
+  })
+
+  await server.start()
+
+  console.log('Server running at:', server.info.uri)
+}
+
+provision()

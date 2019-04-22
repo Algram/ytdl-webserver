@@ -7,7 +7,7 @@ WORKDIR /home/app
 
 RUN apt-get update \
     && apt-get install -y curl ffmpeg \
-    && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+    && curl -sL https://deb.nodesource.com/setup_10.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g npm@latest \
     && rm -rf /var/lib/apt/lists/*
