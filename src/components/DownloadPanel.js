@@ -1,6 +1,7 @@
 /* global document */
 
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { isURL } from 'validator'
 import DownloadForm from './DownloadForm'
 import DownloadList from './DownloadList'

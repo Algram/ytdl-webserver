@@ -5,7 +5,7 @@ const path = require('path')
 const youtube = require('./handlers/youtube')
 
 const server = new Hapi.Server({
-  port: 3000,
+  port: process.env.PORT || 3000,
   routes: {
     files: {
       relativeTo: path.join(__dirname, '../../public')
