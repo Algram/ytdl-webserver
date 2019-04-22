@@ -33,7 +33,7 @@ const provision = async () => {
   server.route({
     method: 'POST',
     path: '/download',
-    handler: (request, reply) => {
+    handler: (request) => {
       const url = request.payload.url
       const options = {
         path: path.join(__dirname, '../../public/temp'),
@@ -53,9 +53,9 @@ const provision = async () => {
   server.route({
     method: 'GET',
     path: '/request/{video}',
-    handler: (request, reply) => {
+    handler: (request, h) => {
       const videoName = encodeURIComponent(request.params.video)
-      reply.file(path.join('temp', decodeURIComponent(videoName)))
+      return h.file(path.join('temp', decodeURIComponent(videoName)))
     }
   })
 
