@@ -1,6 +1,6 @@
 /* global XMLHttpRequest */
 
-function get (url) {
+export function get <T>(url: string): Promise<T> {
   // Return a new promise.
   return new Promise((resolve, reject) => {
     // Do the usual XHR stuff
@@ -31,7 +31,7 @@ function get (url) {
   })
 }
 
-function post (url, params) {
+export function post <T>(url: string, params: string): Promise<T> {
   // Return a new promise.
   return new Promise((resolve, reject) => {
     // Do the usual XHR stuff
@@ -60,9 +60,4 @@ function post (url, params) {
     // Make the request
     req.send(params)
   })
-}
-
-module.exports = {
-  get,
-  post
 }

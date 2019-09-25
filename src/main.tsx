@@ -1,11 +1,11 @@
-/* global document */
+import React from 'react';
+import ReactDOM from 'react-dom'
 
-import React from 'react'
-import { render } from 'react-dom'
 import DownloadPanel from './components/DownloadPanel'
+
 import './stylesheets/shared.scss'
 
-render(
+ReactDOM.render(
   <DownloadPanel />,
   document.getElementById('app')
 )

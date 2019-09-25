@@ -1,15 +1,18 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
+
 import '../stylesheets/DownloadList.scss'
 
-class DownloadList extends Component {
-  componentDidMount () {
-  }
+import { Video } from '../model';
 
-  render () {
-    return (
+interface IDownloadListProps {
+  videos: Video[];
+  onClearClick(e: React.MouseEvent): void;
+  onVideoDownloadClick(e: React.MouseEvent):void;
+}
+
+const DownloadList: React.SFC<IDownloadListProps> = (props: IDownloadListProps) => (
       <ul className='downloadList'>
-        {this.props.videos.map((video, index) =>
+        {props.videos.map((video, index) =>
           <li key={index} className='downloadList__item'>
             <span className='video__name'>{video.name}</span>
             {video.downloading
@@ -22,7 +25,7 @@ class DownloadList extends Component {
               ) : (
                 <span className='video__link'>
                   <a
-                    onClick={this.props.onVideoDownloadClick}
+                    onClick={props.onVideoDownloadClick}
                     data-orig={video.url}
                     href={`/request/${video.name}.${video.format}`}
                     download={`${video.name}.${video.format}`}
@@ -32,18 +35,10 @@ class DownloadList extends Component {
             }
           </li>
         )}
-        {this.props.videos.length === 0
-          ? '' : <li className='downloadList__clear' onClick={this.props.onClearClick}>Clear all</li>
-        }
+        {Boolean(props.videos.length) &&
+          <li className='downloadList__clear' onClick={props.onClearClick}>Clear all</li>}
       </ul>
-    )
-  }
-}
+    );
 
-DownloadList.propTypes = {
-  videos: PropTypes.array,
-  onClearClick: PropTypes.func,
-  onVideoDownloadClick: PropTypes.func
-}
 
-export default DownloadList
+export default DownloadList;

@@ -1,20 +1,28 @@
 /* global document */
 
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React from 'react'
 import { isURL } from 'validator'
 import DownloadForm from './DownloadForm'
 import DownloadList from './DownloadList'
+
 import { post } from '../javascripts/helpers'
 import localStorage from '../javascripts/localStorage'
+
 import '../stylesheets/DownloadPanel.scss'
 
-class DownloadPanel extends Component {
-  constructor (props) {
+import { Video } from '../model'
+
+interface IDownloadPanelState {
+  videos: Video[];
+}
+
+class DownloadPanel extends React.Component<{}, IDownloadPanelState> {
+  constructor (props: {}) {
     super(props)
 
     console.log(localStorage.getItem('videos'))
-    const storedVideos = localStorage.getItem('videos')
+    const storedVideos = localStorage.getItem<any[]>('videos')
+
     this.state = { videos: storedVideos || [] }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleClearClick = this.handleClearClick.bind(this)
@@ -26,9 +34,9 @@ class DownloadPanel extends Component {
     localStorage.removeItem('videos')
   }
 
-  handleVideoDownloadClick (e) {
+  handleVideoDownloadClick (e: React.MouseEvent<Element>) {
     const videos = this.state.videos
-    const videoUrl = e.target.getAttribute('data-orig')
+    const videoUrl = e.currentTarget.getAttribute('data-orig')
 
     const updatedVideos = videos.filter(video => video.url !== videoUrl)
 
@@ -38,9 +46,14 @@ class DownloadPanel extends Component {
     localStorage.setItem('videos', updatedVideos)
   }
 
-  handleSubmit (e) {
+  async handleSubmit (e: React.FormEvent) {
     e.preventDefault()
-    const urlInput = document.querySelector('.downloadForm__input')
+    const urlInput = document.querySelector<HTMLInputElement>('.downloadForm__input')
+
+    if (!urlInput) {
+      return;
+    }
+
     const url = urlInput.value
 
     if (url.length === 0) {
@@ -62,25 +75,27 @@ class DownloadPanel extends Component {
     }
 
     // Provide instant feedback by adding as much as we know to state
-    let videos = this.state.videos
-    this.setState({ videos: [{
-      name: url,
-      url,
-      downloading: true
-    }, ...videos] })
+    this.setState({ 
+      videos: [{ name: url, url, downloading: true }, ...this.state.videos]
+    });
 
-    post('/download', `url=${url}`).then(newVideo => {
-      videos = this.state.videos
+    try {
 
+      const { videos } = this.state;
+      const newVideo = await post<Video>('download', `url=${url}`)
+  
       const updatedVideos = videos.map(video =>
-        (video.url === newVideo.url ? Object.assign({}, video, newVideo) : video)
+        video.url === newVideo.url
+          ? { ...video, ...newVideo, downloading: false }
+          : video
       )
+  
+      this.setState({ videos: updatedVideos });
+      localStorage.setItem('videos', updatedVideos);
 
-      this.setState({ videos: updatedVideos })
-      localStorage.setItem('videos', this.state.videos)
-    }, error => {
-      console.log('Failed!', error)
-    })
+    } catch (ex) {
+      console.log('Failed!', ex);
+    }
   }
 
   render () {
