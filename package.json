@@ -31,10 +31,9 @@
     "validator": "^10.11.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
-    "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.5",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.4",
+    "@types/react-dom": "^16.9.1",
     "css-loader": "^2.1.1",
     "mini-css-extract-plugin": "^0.6.0",
     "node-sass": "^4.12.0",
@@ -42,6 +41,8 @@
     "sass-loader": "^7.1.0",
     "standard": "^12.0.1",
     "style-loader": "^0.23.1",
+    "ts-loader": "^6.2.0",
+    "typescript": "^3.6.3",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-dev-server": "^3.3.1"
