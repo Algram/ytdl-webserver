@@ -41,7 +41,7 @@ class DownloadPanel extends Component {
   handleSubmit (e) {
     e.preventDefault()
     const urlInput = document.querySelector('.downloadForm__input')
-    const url = urlInput.value
+    let url = urlInput.value
 
     if (url.length === 0) {
       return
@@ -60,6 +60,10 @@ class DownloadPanel extends Component {
 
       return
     }
+
+    url = new URL(url);
+    url.search=""; //stripping query params
+    url=url.href;
 
     // Provide instant feedback by adding as much as we know to state
     let videos = this.state.videos
