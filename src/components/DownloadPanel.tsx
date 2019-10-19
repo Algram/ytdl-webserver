@@ -9,7 +9,7 @@ import { post } from '../javascripts/helpers'
 import localStorage from '../javascripts/localStorage'
 import '../stylesheets/DownloadPanel.scss'
 
-class DownloadPanel extends Component {
+class DownloadPanel extends Component<{}, {videos: any}> {
   constructor (props) {
     super(props)
 
@@ -40,7 +40,7 @@ class DownloadPanel extends Component {
 
   handleSubmit (e) {
     e.preventDefault()
-    const urlInput = document.querySelector('.downloadForm__input')
+    const urlInput:HTMLInputElement = document.querySelector('.downloadForm__input')
     const url = urlInput.value
 
     if (url.length === 0) {

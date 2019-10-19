@@ -2,8 +2,10 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-  entry: './src/main.js',
-
+  entry: './src/main.tsx',
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"]
+  },
   output: {
     path: path.resolve(__dirname, 'public'),
     filename: 'bundle.js'
@@ -12,14 +14,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react', '@babel/preset-env']
-          }
-        }
+        test: /\.tsx?$/,
+        loader: 'ts-loader'
       },
       {
         test: /\.scss$/,
