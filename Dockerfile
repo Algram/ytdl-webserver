@@ -1,23 +1,18 @@
-FROM node:dubnium-stretch-slim
+FROM alpine:3.11
 
-WORKDIR /home/app
-
-RUN apt update \
-    && apt install -y curl ffmpeg \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk add curl ffmpeg nodejs npm python \
+    && rm -rf /var/cache/apk/*
 
 # This is on a separate line because youtube-dl needs to be frequently updated
-RUN apt update \
-    && apt install -y youtube-dl \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk add youtube-dl \
+    && rm -rf /var/cache/apk/*
 
-# Only install node_modules if the package.json changes
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm install
 
-COPY . ./
-RUN mkdir -p public/temp \
-    && npm run build
+COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "start" ]
+CMD npm start
