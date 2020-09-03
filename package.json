@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/Algram/ytdl-webserver#readme",
   "dependencies": {
-    "@hapi/hapi": "^18.3.1",
+    "@hapi/hapi": "^19.1.1",
     "@hapi/inert": "^5.2.0",
     "@microlink/youtube-dl": "^1.13.2",
     "extract-text-webpack-plugin": "^3.0.2",
