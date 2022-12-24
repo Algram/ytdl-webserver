@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Luckiest+Guy");
+
 #main-heading {
     color: blue;
     text-align: center;
@@ -25,4 +27,6 @@ p {
   display: block;
   color: #ffff;
   transform: translate(-50%, -50%);
+font-family: "Luckiest Guy", cursive;
+  -webkit-font-smoothing: antialiased;
 }
