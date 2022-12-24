@@ -17,3 +17,12 @@ h1 {
   font-weight: bold;
   color: #CFD9D9;
 }
+p {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  right: 0;
+  display: block;
+  color: #ffff;
+  transform: translate(-50%, -50%);
+}
