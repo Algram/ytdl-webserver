@@ -1,4 +1,14 @@
-
+p {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  right: 0;
+  display: block;
+  color: #ffff;
+  transform: translate(-50%, -50%);
+font-family: "Luckiest Guy", cursive;
+  -webkit-font-smoothing: antialiased;
+}
 
 
 /*code pain*/
@@ -139,14 +149,4 @@ h1 span:nth-child(14) {
   }
   }
 #
-p {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  right: 0;
-  display: block;
-  color: #ffff;
-  transform: translate(-50%, -50%);
-font-family: "Luckiest Guy", cursive;
-  -webkit-font-smoothing: antialiased;
-}
+
